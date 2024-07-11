@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useTransition } from "react";
 
 import { Button } from "@/components/ui/button";
-import { DeleteTag } from "@/actions/DeleteTag";
+import { DeleteTag } from "@/actions/Tag";
 import { Badge } from "./ui/badge";
 
 const TagCard = ({

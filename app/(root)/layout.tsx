@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="relative">
+    <main className="relative background-light850_dark100">
       <Navbar />
       <div className="flex">
         <LeftSidebar />

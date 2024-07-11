@@ -8,7 +8,7 @@ import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 const Navbar = () => {
   return (
-    <nav className="flex-between fixed z-50 w-full gap-5 p-6 shadow-md dark:shadow-none sm:px-12 dark:bg-background bg-light-800">
+    <nav className="flex-between fixed z-50 w-full gap-5 p-6 shadow-md dark:shadow-none sm:px-12 dark:dark-gradient bg-light-800">
       <div className="flex gap-2">
         <MobileNav />
 

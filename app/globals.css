@@ -85,7 +85,7 @@ body {
   }
 
   .card-wrapper {
-    @apply bg-light-900 dark:dark-gradient shadow-light-100 dark:shadow-dark-100;
+    @apply bg-light-800 dark:dark-gradient shadow-light-100 dark:shadow-dark-100;
   }
 
   .btn {
@@ -117,7 +117,7 @@ body {
   }
 
   .tab {
-    @apply min-h-full dark:bg-dark-400 bg-light-800 text-light-500 dark:data-[state=active]:bg-dark-300 data-[state=active]:bg-myPrimary-100 data-[state=active]:text- myPrimary-500 !important;
+    @apply min-h-full dark:bg-dark-400 bg-light-800 text-light-500 dark:data-[state=active]:bg-dark-300 data-[state=active]:bg-myPrimary-100 data-[state=active]:text-myPrimary-500 !important;
   }
 }
 

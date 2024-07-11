@@ -28,11 +28,15 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter];
 const Tag = ({
   disabled,
   onChange,
+  questionTags,
 }: {
   disabled: boolean;
   onChange: (value: TagProps[]) => void;
+  questionTags: TagProps[];
 }) => {
-  const [tags, setTags] = useState<TagProps[]>([]);
+  const [tags, setTags] = useState<TagProps[]>(
+    questionTags ? questionTags : []
+  );
 
   const handleDelete = (i: number) => {
     setTags(tags.filter((tag, index) => index !== i));
@@ -73,6 +77,7 @@ const Tag = ({
       inputFieldPosition="bottom"
       autocomplete
       maxTags={8}
+      disabled={disabled}
       // {...field}
       // onBlur={field.onBlur} c
       classNames={{

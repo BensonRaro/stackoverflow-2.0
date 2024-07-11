@@ -36,24 +36,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={` bg-white dark:bg-black ${inter.variable} ${spaceGrotesk.variable}`}
-      >
-        {/* <ClerkProvider
-            appearance={{
-              elements: {
-                formButtonPrimary: 'primary-gradient',
-                footerActionLink: 'primary-text-gradient hover:text-primary-500'
-              }
-            }}
-          > */}
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Toaster />
-          {children}
-        </ThemeProvider>
-        {/* </ClerkProvider> */}
-      </body>
-    </html>
+    <ClerkProvider
+      appearance={{
+        elements: {
+          formButtonPrimary: "primary-gradient",
+          footerActionLink: "primary-text-gradient hover:text-primary-500",
+        },
+      }}
+    >
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={` bg-white dark:bg-black ${inter.variable} ${spaceGrotesk.variable}`}
+        >
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Toaster />
+            {children}
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

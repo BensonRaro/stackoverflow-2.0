@@ -4,12 +4,15 @@ import { useState, useTransition } from "react";
 import { X } from "lucide-react";
 import { toast } from "sonner";
 import { MdAddTask } from "react-icons/md";
+import { useUser } from "@clerk/nextjs";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { AddTag as Add } from "@/actions/AddTag";
+import { AddTag as Add } from "@/actions/Tag";
 
 const AddTag = () => {
+  const { user } = useUser();
+
   const [value, setValue] = useState("");
   const [isPending, startTransition] = useTransition();
 
@@ -40,7 +43,7 @@ const AddTag = () => {
     >
       <Input
         value={value}
-        disabled={isPending}
+        disabled={isPending || !user}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search"
         className="rounded-r-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
@@ -52,7 +55,7 @@ const AddTag = () => {
         />
       )}
       <Button
-        disabled={isPending}
+        disabled={isPending || !user}
         type="submit"
         variant="secondary"
         className="rounded-l-none"
