@@ -1,51 +1,24 @@
 "use server";
 
-import { db } from "@/lib/db";
-import { currentUser } from "@clerk/nextjs/server";
+import { answer, downvote, question, saved, tag, upvote } from "@prisma/client";
 
 export async function FetchQuestions(
-  limit: number,
-  page: number,
   filter: string,
-  query?: string
+  Tags: tag[],
+  Question:
+    | (question & {
+        tags: tag[];
+        upvotes: upvote[];
+        saves: saved[];
+        downvotes: downvote[];
+        answer: answer[];
+      })[]
+    | null
 ) {
-  const CurrentUser = await currentUser();
-
-  const pageNo = page ? page : 0;
-
-  const Question = await db.question.findMany({
-    skip: limit * Number(pageNo),
-    take: limit,
-    include: {
-      tags: true,
-      answer: true,
-      downvotes: true,
-      saves: true,
-      upvotes: true,
-    },
-    where: {
-      title: {
-        contains: query,
-      },
-    },
-    orderBy: {
-      createdAt: filter === "newest" ? "desc" : "asc",
-    },
-  });
-  // console.log(page, pageNo);
-  // console.log(offset);
-  const Tags = await db.tag.findMany({
-    where: {
-      userId: CurrentUser?.id,
-      questionId: null,
-    },
-  });
-  // console.log(Tags);
-
   const tagNames = Tags.map((tag) => tag.tag);
   // console.log(tagNames);
 
-  const enhancedQuestions = Question.map((question) => {
+  const enhancedQuestions = Question?.map((question) => {
     const QuestionTags = question.tags.filter(
       (tag) => tag.questionId === question.id
     );
@@ -59,11 +32,11 @@ export async function FetchQuestions(
   // Final sorting based on the filter
   let sortedQuestions;
   if (filter === "upvotes") {
-    sortedQuestions = enhancedQuestions.sort(
+    sortedQuestions = enhancedQuestions?.sort(
       (a, b) => b.upvotes.length - a.upvotes.length
     );
   } else if (filter === "recommended" || !filter) {
-    sortedQuestions = enhancedQuestions.sort((a, b) => {
+    sortedQuestions = enhancedQuestions?.sort((a, b) => {
       // Sort by user tags first
       if (a.hasUserTag && !b.hasUserTag) {
         return -1;
@@ -75,7 +48,7 @@ export async function FetchQuestions(
       return 0;
     });
   } else if (filter === "unanswered") {
-    sortedQuestions = enhancedQuestions.sort(
+    sortedQuestions = enhancedQuestions?.sort(
       (a, b) => b.answer.length - a.answer.length
     );
   } else {

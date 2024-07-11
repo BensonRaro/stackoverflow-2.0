@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
 
 import { Button } from "@/components/ui/button";
 import QuestionCard from "@/components/cards/QuestionCard";
@@ -20,18 +21,44 @@ export default async function Home({
     q: string;
   };
 }) {
+  const CurrentUser = await currentUser();
+
   const question = await db.question.findMany();
 
-  const result = await FetchQuestions(
-    10,
-    searchParams.page,
-    searchParams.filter,
-    searchParams.q
-  );
+  const pageNo = searchParams.page ? searchParams.page : 0;
+
+  const Question = await db.question.findMany({
+    skip: 10 * Number(pageNo),
+    take: 10,
+    include: {
+      tags: true,
+      answer: true,
+      downvotes: true,
+      saves: true,
+      upvotes: true,
+    },
+    where: {
+      title: {
+        contains: searchParams.q,
+      },
+    },
+    orderBy: {
+      createdAt: searchParams.filter === "newest" ? "desc" : "asc",
+    },
+  });
+
+  const Tags = await db.tag.findMany({
+    where: {
+      userId: CurrentUser?.id,
+      questionId: null,
+    },
+  });
+
+  const result = await FetchQuestions(searchParams.filter, Tags, Question);
 
   return (
     <>
-      {result.length > 0 && (
+      {Question?.length > 0 && (
         <>
           <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
             <h1 className="h1-bold text-dark100_light900">All Questions</h1>
@@ -63,9 +90,9 @@ export default async function Home({
       )}
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result.length > 0 ? (
+        {Question.length > 0 ? (
           <>
-            {result.map(async (question) => {
+            {result?.map(async (question) => {
               const user = await db.user.findUnique({
                 where: {
                   userId: question.userId,
@@ -82,7 +109,7 @@ export default async function Home({
                 />
               );
             })}
-            {result.length > 10 && (
+            {Question?.length > 10 && (
               <div className="mt-10">
                 <PaginationHome
                   page={searchParams.page}
