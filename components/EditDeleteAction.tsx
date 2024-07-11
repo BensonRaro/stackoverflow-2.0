@@ -23,7 +23,7 @@ const EditDeleteAction = ({ type, itemId, tags, answers }: Props) => {
   const handleDelete = async () => {
     if (type === "Question") {
       // Delete question
-      await DeleteQuestion(itemId, tags, answers);
+      await DeleteQuestion(itemId);
     } else if (type === "Answer") {
       // Delete answer
       await DeleteAnswer(itemId);
