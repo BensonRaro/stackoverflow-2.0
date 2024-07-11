@@ -61,7 +61,7 @@ const AskQuestionAddEdit = ({
   const onSubmit = async (values: z.infer<typeof QuestionsSchema>) => {
     if (question) {
       startTransition(async () => {
-        await EditQuestion(values, question.id, question.tags)
+        await EditQuestion(values, question.id)
           .then(() => {
             form.reset();
             router.push("/");
