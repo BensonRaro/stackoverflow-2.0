@@ -15,13 +15,12 @@ interface user {
   portfolioWebsite: string | null;
 }
 
-export async function CreateUser(values: user) {
-  const CurrentUser = await currentUser();
-  if (!CurrentUser) return;
+export async function CreateUser(values: user, userId?: string) {
+  if (!userId) return;
 
   await db.user.create({
     data: {
-      userId: CurrentUser.id,
+      userId: userId,
       bio: values.bio,
       name: values.name,
       portfolioWebsite: values.portfolioWebsite,

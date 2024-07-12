@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { CreateUser } from "@/actions/User";
+import { CreateUser, DeleteUser, EditUser } from "@/actions/User";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -50,9 +50,6 @@ export async function POST(req: Request) {
     });
   }
 
-  // Do something with the payload
-  // For this guide, you simply log the payload to the console
-  const { id } = evt.data;
   const eventType = evt.type;
 
   if (eventType === "user.created") {
@@ -60,18 +57,45 @@ export async function POST(req: Request) {
       evt.data;
 
     // Create a new user in your database
-    const user = await CreateUser({
-      name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
-      userName: username!,
-      email: email_addresses[0].email_address,
-      imageUrl: image_url,
-      bio: "",
-      portfolioWebsite: "",
-    });
+    const user = await CreateUser(
+      {
+        name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
+        userName: username!,
+        email: email_addresses[0].email_address,
+        imageUrl: image_url,
+        bio: "",
+        portfolioWebsite: "",
+      },
+      id
+    );
     return NextResponse.json({ message: "OK", user: user });
   }
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
+
+  if (eventType === "user.updated") {
+    const { email_addresses, image_url, username, first_name, last_name } =
+      evt.data;
+
+    // Create a new user in your database
+    const User = await EditUser(
+      {
+        name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
+        userName: username!,
+        email: email_addresses[0].email_address,
+        imageUrl: image_url,
+        bio: "",
+        portfolioWebsite: "",
+      },
+      "webhook"
+    );
+
+    return NextResponse.json({ message: "OK", user: User });
+  }
+
+  if (eventType === "user.deleted") {
+    const deletedUser = await DeleteUser();
+
+    return NextResponse.json({ message: "OK", user: deletedUser });
+  }
 
   return new Response("", { status: 200 });
 }
