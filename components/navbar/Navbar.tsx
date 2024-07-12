@@ -25,10 +25,8 @@ const Navbar = () => {
 
       <div className="flex-between gap-5">
         <ThemeToggle />
-        clerk userButton
-        {/* <SignedIn>
+        <SignedIn>
           <UserButton
-            afterSignOutUrl="/"
             appearance={{
               elements: {
                 avatarBox: "h-10 w-10",
@@ -38,7 +36,7 @@ const Navbar = () => {
               },
             }}
           />
-        </SignedIn> */}
+        </SignedIn>
       </div>
     </nav>
   );

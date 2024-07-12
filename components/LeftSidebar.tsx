@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const LeftSidebar = () => {
-  // const { userId } = useAuth();
+  const { userId } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -21,13 +21,13 @@ const LeftSidebar = () => {
             (pathname.includes(item.route) && item.route.length > 1) ||
             pathname === item.route;
 
-          // if (item.route === "/profile") {
-          //   if (userId) {
-          //     item.route = `${item.route}/${userId}`;
-          //   } else {
-          //     return null;
-          //   }
-          // }
+          if (item.route === "/profile") {
+            if (userId) {
+              item.route = `${item.route}/${userId}`;
+            } else {
+              return null;
+            }
+          }
 
           return (
             <Link
@@ -56,25 +56,27 @@ const LeftSidebar = () => {
         })}
       </div>
 
-      {/* <SignedOut> */}
-      <div className="flex flex-col gap-3">
-        <Link href="/sign-in">
-          <Button className="small-medium btn-secondary text-light400_light500 min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
-            <PiSignInBold className="lg:hidden size-7" />
+      <SignedOut>
+        <div className="flex flex-col gap-3">
+          <Link href="/sign-in">
+            <Button className="small-medium btn-secondary text-light400_light500 min-h-[41px] w-full rounded-lg px-4 py-3 shadow-none">
+              <PiSignInBold className="lg:hidden size-7" />
 
-            <span className="primary-text-gradient max-lg:hidden">Log In</span>
-          </Button>
-        </Link>
+              <span className="primary-text-gradient max-lg:hidden">
+                Log In
+              </span>
+            </Button>
+          </Link>
 
-        <Link href="/sign-up">
-          <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
-            <TbLogin className="lg:hidden size-7" />
+          <Link href="/sign-up">
+            <Button className="small-medium light-border-2 btn-tertiary text-dark400_light900 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none">
+              <TbLogin className="lg:hidden size-7" />
 
-            <span className="max-lg:hidden">Sign up</span>
-          </Button>
-        </Link>
-      </div>
-      {/* </SignedOut> */}
+              <span className="max-lg:hidden">Sign up</span>
+            </Button>
+          </Link>
+        </div>
+      </SignedOut>
     </section>
   );
 };
