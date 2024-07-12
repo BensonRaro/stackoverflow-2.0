@@ -92,7 +92,8 @@ export async function POST(req: Request) {
   }
 
   if (eventType === "user.deleted") {
-    const deletedUser = await DeleteUser();
+    const { id } = evt.data;
+    const deletedUser = await DeleteUser(id);
 
     return NextResponse.json({ message: "OK", user: deletedUser });
   }

@@ -32,13 +32,13 @@ export async function CreateUser(values: user, userId?: string) {
   revalidatePath("/", "layout");
 }
 
-export async function DeleteUser() {
+export async function DeleteUser(id?: string) {
   const CurrentUser = await currentUser();
   if (!CurrentUser) return;
 
   await db.user.delete({
     where: {
-      userId: CurrentUser.id,
+      userId: CurrentUser.id || id,
     },
   });
   revalidatePath("/", "layout");
