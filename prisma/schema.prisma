@@ -32,7 +32,7 @@ model user {
 model question {
   id                      String    @id @default(cuid())
   title                   String  
-  explanation             String    @db.VarChar(59999)
+  explanation             String    @db.LongText
   userId                  String    
 
   user                    user      @relation(fields: [userId], references: [userId],onDelete: Cascade)
@@ -50,7 +50,7 @@ model question {
 model answer {
   id                      String    @id @default(cuid())
   questionId              String
-  answer                  String    @db.VarChar(59999)
+  answer                  String    @db.LongText
   userId                  String    
 
   user                    user      @relation(fields: [userId], references: [userId],onDelete: Cascade)
