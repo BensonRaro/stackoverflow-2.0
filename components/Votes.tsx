@@ -138,7 +138,11 @@ const Votes = ({
     <div className="flex gap-5">
       <div className="flex-center gap-2.5">
         <div className="flex-center gap-1.5">
-          <Button onClick={() => handleVote("upvote")} disabled={pending}>
+          <Button
+            onClick={() => handleVote("upvote")}
+            disabled={pending}
+            variant={"ghost"}
+          >
             <Image
               src={
                 hasupVoted
@@ -160,7 +164,11 @@ const Votes = ({
         </div>
 
         <div className="flex-center gap-1.5">
-          <Button onClick={() => handleVote("downvote")} disabled={pending}>
+          <Button
+            onClick={() => handleVote("downvote")}
+            disabled={pending}
+            variant={"ghost"}
+          >
             <Image
               src={
                 hasdownVoted
@@ -183,7 +191,7 @@ const Votes = ({
       </div>
 
       {type === "question" && (
-        <Button disabled={pending} onClick={handleSave}>
+        <Button disabled={pending} onClick={handleSave} variant={"ghost"}>
           <Image
             src={
               hasSaved
