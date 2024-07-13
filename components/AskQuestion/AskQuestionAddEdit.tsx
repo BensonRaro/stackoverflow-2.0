@@ -52,8 +52,7 @@ const AskQuestionAddEdit = ({
         }
       : {
           title: "",
-          explanation:
-            "no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border",
+          explanation: "",
           tags: [],
         },
   });

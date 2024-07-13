@@ -19,15 +19,15 @@ export async function AskQuestion(values: z.infer<typeof QuestionsSchema>) {
     },
   });
 
-  for (const tag of values.tags) {
-    await db.tag.create({
-      data: {
-        userId: CurrentUser.id,
-        tag: tag.text,
-        questionId: question.id,
-      },
-    });
-  }
+  const tags = values.tags.map((tag) => ({
+    userId: CurrentUser.id,
+    tag: tag.text,
+    questionId: question.id,
+  }));
+
+  await db.tag.createMany({
+    data: tags,
+  });
 
   revalidatePath("/", "layout");
 }
@@ -65,15 +65,21 @@ export async function EditQuestion(
     },
   });
 
-  for (const tag of values.tags) {
-    await db.tag.create({
-      data: {
-        userId: CurrentUser.id,
-        tag: tag.text,
-        questionId: question.id,
-      },
-    });
-  }
+  await db.tag.deleteMany({
+    where: {
+      questionId: question.id,
+    },
+  });
+
+  const tagsUpdate = values.tags.map((tag) => ({
+    userId: CurrentUser.id,
+    tag: tag.text,
+    questionId: question.id,
+  }));
+
+  await db.tag.createMany({
+    data: tagsUpdate,
+  });
 
   revalidatePath("/", "layout");
 }
