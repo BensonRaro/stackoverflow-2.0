@@ -60,6 +60,8 @@ const QuestionPage = async ({
     },
   });
 
+  const explanation = question?.explanation!.toString();
+
   const user = await db.user.findUnique({
     where: {
       userId: question.userId,
@@ -137,7 +139,7 @@ const QuestionPage = async ({
         />
       </div>
 
-      <ParseHTML data={question.explanation} />
+      <ParseHTML data={explanation} />
 
       <div className="mt-8 flex flex-wrap gap-2">
         {question.tags.map((tag) => (

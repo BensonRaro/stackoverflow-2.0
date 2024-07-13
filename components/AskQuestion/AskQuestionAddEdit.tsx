@@ -42,12 +42,15 @@ const AskQuestionAddEdit = ({
     id: tag.id,
     text: tag.tag,
   }));
+
+  const explanation = question?.explanation!.toString();
+
   const form = useForm<z.infer<typeof QuestionsSchema>>({
     resolver: zodResolver(QuestionsSchema),
     defaultValues: question
       ? {
           title: question.title,
-          explanation: question.explanation,
+          explanation: explanation,
           tags: tagNames,
         }
       : {
