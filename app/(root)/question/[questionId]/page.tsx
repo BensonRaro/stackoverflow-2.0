@@ -38,6 +38,28 @@ const QuestionPage = async ({
 
   if (!question) return null;
 
+  const pageNo = searchParams.page ? searchParams.page : 0;
+
+  const answers = await db.answer.findMany({
+    where: {
+      questionId: params.questionId,
+    },
+    skip: 10 * Number(pageNo),
+    take: 10,
+    include: {
+      downvotes: true,
+      upvotes: true,
+    },
+    orderBy: {
+      createdAt:
+        searchParams.filter === "recent"
+          ? "desc"
+          : searchParams.filter === "old"
+          ? "asc"
+          : "desc",
+    },
+  });
+
   const user = await db.user.findUnique({
     where: {
       userId: question.userId,
@@ -127,6 +149,7 @@ const QuestionPage = async ({
         totalAnswers={question.answer.length}
         page={searchParams?.page}
         filter={searchParams?.filter}
+        answers={answers}
       />
 
       <Answer questionId={question.id} authorId={user?.id} />

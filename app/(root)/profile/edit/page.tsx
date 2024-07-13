@@ -1,33 +1,26 @@
-// import Profile from '@/components/forms/Profile';
-// import { getUserById } from '@/lib/actions/user.action';
-// import { ParamsProps } from '@/types';
-// import { auth } from '@clerk/nextjs'
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-// const Page = async ({ params }: ParamsProps) => {
-//   const { userId } = auth();
+import { db } from "@/lib/db";
+import Profile from "@/components/Profile";
 
-//   if(!userId) return null;
+const Page = async () => {
+  const clerkUser = await currentUser();
+  if (!clerkUser) {
+    redirect("/");
+  }
 
-//   const mongoUser = await getUserById({ userId })
+  const user = await db.user.findUnique({ where: { userId: clerkUser?.id } });
 
-//   return (
-//     <>
-//       <h1 className="h1-bold text-dark100_light900">Edit Profile</h1>
+  return (
+    <>
+      <h1 className="h1-bold text-dark100_light900">Edit Profile</h1>
 
-//       <div className="mt-9">
-//         <Profile
-//           clerkId={userId}
-//           user={JSON.stringify(mongoUser)}
-//         />
-//       </div>
-//     </>
-//   )
-// }
-
-// export default Page
-
-const page = () => {
-  return <div>page</div>;
+      <div className="mt-9">
+        <Profile user={user} />
+      </div>
+    </>
+  );
 };
 
-export default page;
+export default Page;

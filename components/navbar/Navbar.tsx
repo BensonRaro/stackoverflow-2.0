@@ -2,9 +2,9 @@ import { SignedIn, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
-import MobileNav from "./MobileNav";
+import MobileNav from "@/components/navbar/MobileNav";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
-// import GlobalSearch from '../search/GlobalSearch'
+import RightNav from "@/components/navbar/RightNav";
 
 const Navbar = () => {
   return (
@@ -25,6 +25,7 @@ const Navbar = () => {
 
       <div className="flex-between gap-5">
         <ThemeToggle />
+        <RightNav />
         <SignedIn>
           <UserButton
             appearance={{

@@ -1,3 +1,4 @@
+import { answer, downvote, upvote } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import { currentUser } from "@clerk/nextjs/server";
@@ -11,27 +12,39 @@ import { AnswerFilters } from "@/constants/filters";
 import MobileFilter from "@/components/filter/MobileFilter";
 import HomeFilters from "@/components/filter/HomeFilters";
 import { FetchAnswer } from "@/actions/FetchAnswer";
+import NoResult from "./NoResult";
 
 interface Props {
   totalAnswers: number;
   page: number;
   filter: string;
+  answers:
+    | (answer & {
+        upvotes: upvote[];
+        downvotes: downvote[];
+      })[]
+    | null;
 }
 
-const AllAnswers = async ({ totalAnswers, page, filter }: Props) => {
+const AllAnswers = async ({ totalAnswers, page, filter, answers }: Props) => {
   const ClerkUser = await currentUser();
 
-  const answers = await db.answer.findMany();
-
-  const result = await FetchAnswer(page, filter);
+  const result = await FetchAnswer(filter, answers);
 
   if (!result) return;
 
   return (
-    <div className="mt-11">
-      <div className="flex items-center justify-between">
-        <h3 className="primary-text-gradient">{totalAnswers} Answers</h3>
-      </div>
+    <div className="mt-2">
+      {totalAnswers === 0 ? (
+        <NoResult
+          title="There’s no answers to show"
+          description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
+        />
+      ) : (
+        <div className="flex items-center justify-between">
+          <h3 className="primary-text-gradient">{totalAnswers} Answers</h3>
+        </div>
+      )}
       {result.length > 0 && (
         <>
           <div className="mt-11 gap-5 max-sm:flex-col sm:items-center">
@@ -100,9 +113,9 @@ const AllAnswers = async ({ totalAnswers, page, filter }: Props) => {
           );
         })}
       </div>
-      {answers.length > 10 && (
+      {totalAnswers > 10 && (
         <div className="w-full">
-          <PaginationHome page={page} questions={answers.length} />
+          <PaginationHome page={page} length={totalAnswers} />
         </div>
       )}
     </div>

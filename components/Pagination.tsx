@@ -11,13 +11,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-const PaginationHome = ({
-  page,
-  questions,
-}: {
-  page: number;
-  questions: number;
-}) => {
+const PaginationHome = ({ page, length }: { page: number; length: number }) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
@@ -25,7 +19,7 @@ const PaginationHome = ({
   const [Previous, setPrevious] = useState<number | null>();
 
   useEffect(() => {
-    const NoOfPages = Math.ceil(questions / 10) - 1;
+    const NoOfPages = Math.ceil(length / 10) - 1;
     const currentPage = Number(page) ? Number(page) : 0;
 
     if (currentPage < NoOfPages) {
@@ -35,14 +29,14 @@ const PaginationHome = ({
     if (currentPage > 1) {
       setPrevious(currentPage - 1);
     }
-  }, [page, questions]);
+  }, [page, length]);
 
   const createPageUrl = (
     pageNumber: number | null | undefined,
     use: "previous" | "next"
   ) => {
     if (use === "previous" && Number(page) === 1) {
-      replace("/");
+      replace(`${pathname}`);
     } else if (pageNumber) {
       const params = new URLSearchParams(searchParams);
       params.set("page", pageNumber.toString());

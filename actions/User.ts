@@ -9,8 +9,8 @@ import { db } from "@/lib/db";
 interface user {
   name: string;
   userName: string;
-  imageUrl: string;
-  email: string;
+  imageUrl?: string;
+  email?: string;
   bio: string | null;
   portfolioWebsite: string | null;
 }
@@ -25,8 +25,8 @@ export async function CreateUser(values: user, userId?: string) {
       name: values.name,
       portfolioWebsite: values.portfolioWebsite,
       userName: values.userName,
-      email: values.email,
-      imageUrl: values.imageUrl,
+      email: values.email || "",
+      imageUrl: values.imageUrl || "",
     },
   });
   revalidatePath("/", "layout");

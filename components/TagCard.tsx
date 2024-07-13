@@ -33,7 +33,7 @@ const TagCard = ({
   };
   return (
     <div className="flex justify-between gap-2">
-      <Badge className="dark:bg-primary/10 bg-primary/30 hover:bg-primary/30 text-accent-foreground rounded-md border-none px-4 py-2 text-base font-semibold">
+      <Badge className="bg-light-800 text-light-500 hover:bg-light-800 dark:bg-dark-300 dark:text-light-500 dark:hover:bg-dark-300rounded-md border-none px-4 py-2 text-base font-semibold">
         {tag}
       </Badge>
       {use === "RightSidebar" && (

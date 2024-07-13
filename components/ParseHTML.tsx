@@ -4,7 +4,6 @@ import { useEffect } from "react";
 
 import Prism from "prismjs";
 import parse from "html-react-parser";
-import ReactMarkdown from "react-markdown";
 
 import "prismjs/components/prism-python";
 import "prismjs/components/prism-java";
@@ -45,7 +44,6 @@ const ParseHTML = ({ data }: Props) => {
       }
     >
       {parse(data!)}
-      {/* <ReactMarkdown>{data}</ReactMarkdown> */}
     </div>
   );
 };

@@ -1,28 +1,24 @@
-import Link from "next/link";
-import { currentUser } from "@clerk/nextjs/server";
-
-import { Button } from "@/components/ui/button";
+import { db } from "@/lib/db";
+import { FetchQuestions } from "@/actions/FetchQuestions";
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/NoResult";
-import { FetchQuestions } from "@/actions/FetchQuestions";
 import PaginationHome from "@/components/Pagination";
-import { db } from "@/lib/db";
-import LocalSearchbar from "@/components/search/LocalSearchbar";
-import MobileFilter from "@/components/filter/MobileFilter";
 import HomeFilters from "@/components/filter/HomeFilters";
 import { HomePageFilters } from "@/constants/filters";
+import MobileFilter from "@/components/filter/MobileFilter";
+import LocalSearchbar from "@/components/search/LocalSearchbar";
 
-export default async function Home({
-  searchParams,
-}: {
+interface Props {
+  userId: string;
+  clerkId?: string | null;
   searchParams: {
     page: number;
     filter: string;
     q: string;
   };
-}) {
-  const CurrentUser = await currentUser();
+}
 
+const QuestionTab = async ({ searchParams, userId }: Props) => {
   const question = await db.question.findMany();
 
   const pageNo = searchParams.page ? searchParams.page : 0;
@@ -49,7 +45,7 @@ export default async function Home({
 
   const Tags = await db.tag.findMany({
     where: {
-      userId: CurrentUser?.id,
+      userId: userId,
       questionId: null,
     },
   });
@@ -60,17 +56,6 @@ export default async function Home({
     <>
       {Question?.length > 0 && (
         <>
-          <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
-            <h1 className="h1-bold text-dark100_light900">All Questions</h1>
-            <Link
-              href="/askQuestion"
-              className="flex justify-end max-sm:w-full"
-            >
-              <Button className="primary-gradient min-h-[46px] px-4 py-3 !text-light-900">
-                Ask a Question
-              </Button>
-            </Link>
-          </div>
           <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
             <LocalSearchbar
               route="/"
@@ -88,7 +73,6 @@ export default async function Home({
           <HomeFilters filters={HomePageFilters} />
         </>
       )}
-
       <div className="mt-10 flex w-full flex-col gap-6">
         {result?.length! > 0 ? (
           <>
@@ -129,4 +113,6 @@ export default async function Home({
       </div>
     </>
   );
-}
+};
+
+export default QuestionTab;
