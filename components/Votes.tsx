@@ -43,6 +43,12 @@ const Votes = ({
   // console.log(hasSaved);
   const use = type === "answer" ? "answer" : "question";
   const handleSave = () => {
+    if (!userId) {
+      return toast({
+        title: "Please log in",
+        description: "You must be logged in to perform this action",
+      });
+    }
     startTranstion(async () => {
       if (hasSaved) {
         const SavedByUser = saved?.find(
@@ -60,13 +66,6 @@ const Votes = ({
             console.log(error);
           });
       }
-    });
-
-    return toast({
-      title: `Question ${
-        !hasSaved ? "Saved in" : "Removed from"
-      } your collection`,
-      variant: !hasSaved ? "default" : "destructive",
     });
   };
 
@@ -99,10 +98,6 @@ const Votes = ({
           await UnUpvote(upvotesResults?.id);
         });
       }
-      return toast({
-        title: `Upvote ${!hasupVoted ? "Successful" : "Removed"}`,
-        variant: !hasupVoted ? "default" : "destructive",
-      });
     }
 
     if (action === "downvote") {
@@ -127,10 +122,6 @@ const Votes = ({
           await DeleteDownVote(DownvotesResults?.id);
         });
       }
-      return toast({
-        title: `Downvote ${!hasdownVoted ? "Successful" : "Removed"}`,
-        variant: !hasdownVoted ? "default" : "destructive",
-      });
     }
   };
 
