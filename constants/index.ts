@@ -31,12 +31,6 @@ export const sidebarLinks = [
     label: "Collection",
   },
   {
-    icon: FaRegUser,
-    active: FaUser,
-    route: "/profile",
-    label: "Profile",
-  },
-  {
     icon: BsPatchQuestion,
     active: BsPatchQuestionFill,
     route: "/askQuestion",
