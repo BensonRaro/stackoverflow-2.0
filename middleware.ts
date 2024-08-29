@@ -4,6 +4,7 @@ const isProtectedRoute = createRouteMatcher([
   // "/askQuestion(.*)",
   "/collection(.*)",
   "/profile/edit(.*)",
+  "/askQuestion",
 ]);
 
 export default clerkMiddleware((auth, req) => {
