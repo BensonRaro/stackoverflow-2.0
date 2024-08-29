@@ -4,7 +4,7 @@ export default function Page() {
   return (
     <SignUp
       signInFallbackRedirectUrl={"/"}
-      signInUrl="/sign-upn"
+      signInUrl="/sign-up"
       fallbackRedirectUrl={"/"}
     />
   );

@@ -13,6 +13,12 @@ export const sidebarLinks = [
     label: "Home",
   },
   {
+    icon: FaRegUser,
+    active: FaUser,
+    route: "/profile",
+    label: "Profile",
+  },
+  {
     icon: PiUsersThreeLight,
     active: PiUsersThreeFill,
     route: "/community",

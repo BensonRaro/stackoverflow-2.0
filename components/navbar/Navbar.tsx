@@ -25,7 +25,6 @@ const Navbar = () => {
 
       <div className="flex-between gap-5">
         <ThemeToggle />
-        <RightNav />
         <SignedIn>
           <UserButton
             appearance={{
@@ -38,6 +37,7 @@ const Navbar = () => {
             }}
           />
         </SignedIn>
+        <RightNav />
       </div>
     </nav>
   );

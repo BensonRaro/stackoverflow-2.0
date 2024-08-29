@@ -14,7 +14,6 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
         </section>
         <RightSidebar />
       </div>
-
       <Toaster />
     </main>
   );

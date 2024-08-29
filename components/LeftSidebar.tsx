@@ -4,9 +4,9 @@ import { SignedOut, useAuth } from "@clerk/nextjs";
 import { PiSignInBold } from "react-icons/pi";
 import { TbLogin } from "react-icons/tb";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { sidebarLinks } from "@/constants";
-import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const LeftSidebar = () => {

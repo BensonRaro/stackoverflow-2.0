@@ -37,6 +37,7 @@ const QuestionTab = async ({ searchParams, userId }: Props) => {
       title: {
         contains: searchParams.q,
       },
+      userId: userId,
     },
     orderBy: {
       createdAt: searchParams.filter === "newest" ? "desc" : "asc",
