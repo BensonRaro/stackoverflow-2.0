@@ -6,7 +6,7 @@ import LocalSearchbar from "@/components/search/LocalSearchbar";
 import MobileFilter from "@/components/filter/MobileFilter";
 import { SavedPageFilters } from "@/constants/filters";
 import { db } from "@/lib/db";
-import PaginationHome from "@/components/Pagination";
+import PaginationHome from "@/components/CustomPagination";
 import NoResult from "@/components/NoResult";
 
 export default async function Home({

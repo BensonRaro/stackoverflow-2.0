@@ -4,7 +4,7 @@ import { answer, downvote, question, saved, tag, upvote } from "@prisma/client";
 
 export async function FetchQuestions(
   filter: string,
-  Tags: tag[],
+  userTags: tag[],
   Question:
     | (question & {
         tags: tag[];
@@ -15,16 +15,16 @@ export async function FetchQuestions(
       })[]
     | null
 ) {
-  const tagNames = Tags.map((tag) => tag.tag);
+  const userTagNames = userTags.map((tag) => tag.tag);
   // console.log(tagNames);
 
   const enhancedQuestions = Question?.map((question) => {
-    const QuestionTags = question.tags.filter(
-      (tag) => tag.questionId === question.id
-    );
+    // const QuestionTags = question.tags.filter(
+    //   (tag) => tag.questionId === question.id
+    // );
     const Results = {
       ...question,
-      hasUserTag: QuestionTags.some((tag) => tagNames.includes(tag.tag)),
+      hasUserTag: question.tags.some((tag) => userTagNames.includes(tag.tag)),
     };
     return Results;
   });

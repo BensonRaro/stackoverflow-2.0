@@ -5,11 +5,11 @@ import { useTransition } from "react";
 import { downvote, saved, upvote } from "@prisma/client";
 
 import { formatAndDivideNumber } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { UnSave, save } from "@/actions/Save";
 import { UnUpvote, Upvotefn } from "@/actions/Upvote";
 import { DeleteDownVote, DownVote } from "@/actions/DownVote";
-import { Button } from "@/components/ui/button";
 
 interface Props {
   type: "answer" | "question";
@@ -77,8 +77,8 @@ const Votes = ({
       });
     }
     if (action === "upvote") {
-      if (!hasupVoted) {
-        startTranstion(async () => {
+      startTranstion(async () => {
+        if (!hasupVoted) {
           if (hasdownVoted) {
             const DownvotesResults = Downvotes?.find(
               (item) => item.userId === userId
@@ -89,20 +89,18 @@ const Votes = ({
           } else {
             await Upvotefn(itemId, use);
           }
-        });
-      } else {
-        startTranstion(async () => {
+        } else {
           const upvotesResults = Upvotes?.find(
             (item) => item.userId === userId
           );
           await UnUpvote(upvotesResults?.id);
-        });
-      }
+        }
+      });
     }
 
     if (action === "downvote") {
-      if (!hasdownVoted) {
-        startTranstion(async () => {
+      startTranstion(async () => {
+        if (!hasdownVoted) {
           if (hasupVoted) {
             const upvotesResults = Upvotes?.find(
               (item) => item.userId === userId
@@ -113,21 +111,21 @@ const Votes = ({
           } else {
             await DownVote(itemId, use);
           }
-        });
-      } else {
-        startTranstion(async () => {
+        } else {
           const DownvotesResults = Downvotes?.find(
             (item) => item.userId === userId
           );
           await DeleteDownVote(DownvotesResults?.id);
-        });
-      }
+        }
+      });
     }
   };
 
   return (
     <div className="flex gap-5">
+      {/* votes */}
       <div className="flex-center gap-2.5">
+        {/* upvotes */}
         <div className="flex-center gap-1.5">
           <Button
             onClick={() => handleVote("upvote")}
@@ -153,7 +151,7 @@ const Votes = ({
             </p>
           </div>
         </div>
-
+        {/* downvotes */}
         <div className="flex-center gap-1.5">
           <Button
             onClick={() => handleVote("downvote")}
@@ -180,7 +178,7 @@ const Votes = ({
           </div>
         </div>
       </div>
-
+      {/* saved */}
       {type === "question" && (
         <Button disabled={pending} onClick={handleSave} variant={"ghost"}>
           <Image

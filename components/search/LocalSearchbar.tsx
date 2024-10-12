@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 
-interface CustomInputProps {
+interface SearchbarProps {
   route: string;
   iconPosition: string;
   imgSrc: string;
@@ -21,7 +21,7 @@ const LocalSearchbar = ({
   imgSrc,
   placeholder,
   otherClasses,
-}: CustomInputProps) => {
+}: SearchbarProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();

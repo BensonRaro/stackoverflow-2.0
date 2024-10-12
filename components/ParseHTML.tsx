@@ -29,10 +29,10 @@ import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 
 interface Props {
-  data: string | null;
+  explanation: string | null;
 }
 
-const ParseHTML = ({ data }: Props) => {
+const ParseHTML = ({ explanation }: Props) => {
   useEffect(() => {
     Prism.highlightAll();
   }, []);
@@ -43,7 +43,7 @@ const ParseHTML = ({ data }: Props) => {
         "max-w-full prose dark:prose-p:text-light-700 dark:prose-ol:text-light-700 dark:prose-ul:text-light-500 dark:prose-strong:text-white dark:prose-headings:text-white prose-headings:text-dark-400 prose-h1:text-dark-300 prose-h2:text-dark-300 prose-p:text-dark-500 prose-ul:text-dark-500 prose-ol:text-dark-500 w-full min-w-full"
       }
     >
-      {parse(data!)}
+      {parse(explanation!)}
     </div>
   );
 };

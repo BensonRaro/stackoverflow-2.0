@@ -5,6 +5,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { user } from "@prisma/client";
 
 import {
   Form,
@@ -19,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ProfileSchema } from "@/lib/validations";
 import { EditUser } from "@/actions/User";
-import { user } from "@prisma/client";
 
 interface Props {
   user: user | null;

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/NoResult";
 import { FetchQuestions } from "@/actions/FetchQuestions";
-import PaginationHome from "@/components/Pagination";
+import CustomPagination from "@/components/CustomPagination";
 import { db } from "@/lib/db";
 import LocalSearchbar from "@/components/search/LocalSearchbar";
 import MobileFilter from "@/components/filter/MobileFilter";
@@ -47,14 +47,14 @@ export default async function Home({
     },
   });
 
-  const Tags = await db.tag.findMany({
+  const UserTags = await db.tag.findMany({
     where: {
       userId: CurrentUser?.id,
       questionId: null,
     },
   });
 
-  const result = await FetchQuestions(searchParams.filter, Tags, Question);
+  const result = await FetchQuestions(searchParams.filter, UserTags, Question);
 
   return (
     <>
@@ -111,7 +111,7 @@ export default async function Home({
             })}
             {Question?.length > 10 && (
               <div className="mt-10">
-                <PaginationHome
+                <CustomPagination
                   page={searchParams.page}
                   length={question.length}
                 />

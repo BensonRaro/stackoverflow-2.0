@@ -11,32 +11,41 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-const PaginationHome = ({ page, length }: { page: number; length: number }) => {
+const CustomPagination = ({
+  page,
+  length,
+}: {
+  page: number;
+  length: number;
+}) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const [Next, setNext] = useState<number>(1);
   const [Previous, setPrevious] = useState<number | null>();
-
+  const NoOfPages = Math.ceil(length / 1) - 1;
   useEffect(() => {
-    const NoOfPages = Math.ceil(length / 10) - 1;
     const currentPage = Number(page) ? Number(page) : 0;
 
-    if (currentPage < NoOfPages) {
+    if (currentPage > NoOfPages) {
       setNext(currentPage + 1);
     }
 
     if (currentPage > 1) {
       setPrevious(currentPage - 1);
     }
-  }, [page, length]);
+  }, [page, length, Next, Previous]);
 
-  const createPageUrl = (
+  const createUrl = (
     pageNumber: number | null | undefined,
     use: "previous" | "next"
   ) => {
     if (use === "previous" && Number(page) === 1) {
-      replace(`${pathname}`);
+      const params = new URLSearchParams(searchParams);
+      //  Deletes the given search parameter, and its associated value, from the list of all search parameters.
+      params.delete("page");
+      replace(`${pathname}?${params.toString()}`);
+      //   replace(`${pathname}`)
     } else if (pageNumber) {
       const params = new URLSearchParams(searchParams);
       params.set("page", pageNumber.toString());
@@ -50,16 +59,17 @@ const PaginationHome = ({ page, length }: { page: number; length: number }) => {
         {page && (
           <PaginationItem className="cursor-pointer">
             <PaginationPrevious
-              onClick={() => createPageUrl(Previous, "previous")}
+              onClick={() => createUrl(Previous, "previous")}
             />
           </PaginationItem>
         )}
-        <PaginationItem className="cursor-pointer">
-          <PaginationNext onClick={() => createPageUrl(Next, "next")} />
-        </PaginationItem>
+        {page !== NoOfPages && (
+          <PaginationItem className="cursor-pointer">
+            <PaginationNext onClick={() => createUrl(Next, "next")} />
+          </PaginationItem>
+        )}
       </PaginationContent>
     </Pagination>
   );
 };
-
-export default PaginationHome;
+export default CustomPagination;

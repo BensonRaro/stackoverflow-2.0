@@ -9,11 +9,9 @@ import { useRouter } from "next/navigation";
 interface Props {
   type: string;
   itemId: string;
-  tags?: tag[];
-  answers?: answer[];
 }
 
-const EditDeleteAction = ({ type, itemId, tags, answers }: Props) => {
+const EditDeleteAction = ({ type, itemId }: Props) => {
   const router = useRouter();
 
   const handleEdit = () => {

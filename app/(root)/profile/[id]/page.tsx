@@ -48,6 +48,7 @@ const Page = async ({
     include: {
       downvotes: true,
       upvotes: true,
+      user: true,
     },
     orderBy: {
       createdAt:

@@ -1,9 +1,9 @@
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 
+import { db } from "@/lib/db";
 import TagCard from "@/components/TagCard";
 import AddTag from "@/components/AddTag";
-import { db } from "@/lib/db";
 
 const RightSidebar = async () => {
   const user = await currentUser();

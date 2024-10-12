@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import LocalSearchbar from "@/components/search/LocalSearchbar";
-import PaginationHome from "@/components/Pagination";
+import PaginationHome from "@/components/CustomPagination";
 import { UserFilters } from "@/constants/filters";
 import MobileFilter from "@/components/filter/MobileFilter";
 import UserCard from "@/components/UserCard";

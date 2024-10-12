@@ -1,6 +1,6 @@
 "use server";
 
-import { answer, downvote, upvote } from "@prisma/client";
+import { answer, downvote, upvote, user } from "@prisma/client";
 
 export async function FetchAnswer(
   filter: string,
@@ -8,6 +8,7 @@ export async function FetchAnswer(
     | (answer & {
         upvotes: upvote[];
         downvotes: downvote[];
+        user: user;
       })[]
     | null
 ) {

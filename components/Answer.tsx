@@ -20,18 +20,16 @@ import { AnswerQuestion } from "@/actions/Answer";
 
 interface Props {
   questionId: string;
-  authorId: string | undefined;
 }
 
-const Answer = ({ questionId, authorId }: Props) => {
+const Answer = ({ questionId }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { resolvedTheme } = useTheme();
   const editorRef = useRef(null);
   const form = useForm<z.infer<typeof AnswerSchema>>({
     resolver: zodResolver(AnswerSchema),
     defaultValues: {
-      answer:
-        "no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border",
+      answer: "",
     },
   });
 

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { useTransition } from "react";
+import { question, tag } from "@prisma/client";
 
 import {
   Form,
@@ -22,7 +23,6 @@ import { Button } from "@/components/ui/button";
 import { QuestionsSchema } from "@/lib/validations";
 import Tag from "@/components/AskQuestion/tag";
 import { AskQuestion, EditQuestion } from "@/actions/Question";
-import { question, tag } from "@prisma/client";
 
 const AskQuestionAddEdit = ({
   question,
@@ -61,8 +61,8 @@ const AskQuestionAddEdit = ({
   });
 
   const onSubmit = async (values: z.infer<typeof QuestionsSchema>) => {
-    if (question) {
-      startTransition(async () => {
+    startTransition(async () => {
+      if (question) {
         await EditQuestion(values, question.id)
           .then(() => {
             form.reset();
@@ -71,9 +71,7 @@ const AskQuestionAddEdit = ({
           .catch((err) => {
             console.log(err);
           });
-      });
-    } else {
-      startTransition(async () => {
+      } else {
         await AskQuestion(values)
           .then(() => {
             form.reset();
@@ -82,8 +80,8 @@ const AskQuestionAddEdit = ({
           .catch((err) => {
             console.log(err);
           });
-      });
-    }
+      }
+    });
   };
   // form.
   return (

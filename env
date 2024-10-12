@@ -1,0 +1,7 @@
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_cGVyZmVjdC1ib25lZmlzaC00Ni5jbGVyay5hY2NvdW50cy5kZXYk
+CLERK_SECRET_KEY=sk_test_Zs2ResIQ56HSmrY5JqrnoPdhn9y2D7i3jOroImLffT
+WEBHOOK_SECRET=whsec_0gRAbjLN0f5+AjKHMwjJkQgYHZNbsVfc
+
+DATABASE_URL="mysql://avnadmin:AVNS_zJ20OzJRwHIgEONMaBo@mysql-93cf616-developerspack-2779.h.aivencloud.com:26966/defaultdb?ssl-mode=REQUIRED"
+
+NEXT_PUBLIC_TINY_EDITOR_API_KEY='blt6f3t2ak5w3jgqv0roxgec4y19worgd2qu6hppm85ye0ss'

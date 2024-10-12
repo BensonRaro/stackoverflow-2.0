@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { FetchQuestions } from "@/actions/FetchQuestions";
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/NoResult";
-import PaginationHome from "@/components/Pagination";
+import PaginationHome from "@/components/CustomPagination";
 import HomeFilters from "@/components/filter/HomeFilters";
 import { HomePageFilters } from "@/constants/filters";
 import MobileFilter from "@/components/filter/MobileFilter";

@@ -5,17 +5,17 @@ import { currentUser } from "@clerk/nextjs/server";
 import Metric from "@/components/Metric";
 import TagCard from "@/components/TagCard";
 import { formatAndDivideNumber, getTimestamp } from "@/lib/utils";
-import ParseHTML from "@/components/ParseHTML";
+import { db } from "@/lib/db";
 import AllAnswers from "@/components/AllAnswers";
 import Answer from "@/components/Answer";
 import Votes from "@/components/Votes";
-import { db } from "@/lib/db";
+import ParseHTML from "@/components/ParseHTML";
 
 const QuestionPage = async ({
   params,
   searchParams,
 }: {
-  params: { questionId: string };
+  params: { id: string };
   searchParams: {
     page: number;
     filter: string;
@@ -25,7 +25,7 @@ const QuestionPage = async ({
 
   const question = await db.question.findUnique({
     where: {
-      id: params.questionId,
+      id: params.id,
     },
     include: {
       tags: true,
@@ -42,13 +42,14 @@ const QuestionPage = async ({
 
   const answers = await db.answer.findMany({
     where: {
-      questionId: params.questionId,
+      questionId: params.id,
     },
     skip: 10 * Number(pageNo),
     take: 10,
     include: {
       downvotes: true,
       upvotes: true,
+      user: true,
     },
     orderBy: {
       createdAt:
@@ -60,8 +61,6 @@ const QuestionPage = async ({
     },
   });
 
-  const explanation = question?.explanation!.toString();
-
   const user = await db.user.findUnique({
     where: {
       userId: question.userId,
@@ -69,8 +68,6 @@ const QuestionPage = async ({
   });
 
   const saved = await db.saved.findMany();
-
-  const views = 0;
 
   return (
     <>
@@ -130,16 +127,9 @@ const QuestionPage = async ({
           title=" Answers"
           textStyles="small-medium text-dark400_light800"
         />
-        <Metric
-          imgUrl="/assets/icons/eye.svg"
-          alt="eye"
-          value={formatAndDivideNumber(views)}
-          title=" Views"
-          textStyles="small-medium text-dark400_light800"
-        />
       </div>
 
-      <ParseHTML data={explanation} />
+      <ParseHTML explanation={question.explanation} />
 
       <div className="mt-8 flex flex-wrap gap-2">
         {question.tags.map((tag) => (
@@ -154,7 +144,7 @@ const QuestionPage = async ({
         answers={answers}
       />
 
-      <Answer questionId={question.id} authorId={user?.id} />
+      <Answer questionId={question.id} />
     </>
   );
 };

@@ -1,18 +1,17 @@
-import { answer, downvote, upvote } from "@prisma/client";
+import { answer, downvote, upvote, user } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 import { currentUser } from "@clerk/nextjs/server";
 
 import { getTimestamp } from "@/lib/utils";
 import ParseHTML from "@/components/ParseHTML";
-import PaginationHome from "@/components/Pagination";
+import PaginationHome from "@/components/CustomPagination";
 import Votes from "@/components/Votes";
-import { db } from "@/lib/db";
 import { AnswerFilters } from "@/constants/filters";
 import MobileFilter from "@/components/filter/MobileFilter";
 import HomeFilters from "@/components/filter/HomeFilters";
-import { FetchAnswer } from "@/actions/FetchAnswer";
 import NoResult from "./NoResult";
+import { FetchAnswer } from "@/actions/FetchAnswer";
 
 interface Props {
   totalAnswers: number;
@@ -22,6 +21,7 @@ interface Props {
     | (answer & {
         upvotes: upvote[];
         downvotes: downvote[];
+        user: user;
       })[]
     | null;
 }
@@ -59,59 +59,51 @@ const AllAnswers = async ({ totalAnswers, page, filter, answers }: Props) => {
       )}
 
       <div className="mb-10">
-        {result.map(async (answer) => {
-          const user = await db.user.findUnique({
-            where: {
-              userId: answer.userId,
-            },
-          });
+        {result.map(async (answer) => (
+          <article key={answer.id} className="light-border border-b py-10">
+            <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
+              <Link
+                href={`/profile/${answer.userId}`}
+                className="flex flex-1 items-start gap-1 sm:items-center"
+              >
+                <Image
+                  src={answer.user.imageUrl}
+                  width={18}
+                  height={18}
+                  alt="profile"
+                  className="rounded-full object-cover max-sm:mt-0.5"
+                />
+                <div className="flex flex-col sm:flex-row sm:items-center">
+                  <p className="body-semibold text-dark300_light700">
+                    {answer.user?.name}
+                  </p>
 
-          return (
-            <article key={answer.id} className="light-border border-b py-10">
-              <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
-                <Link
-                  href={`/profile/${answer.userId}`}
-                  className="flex flex-1 items-start gap-1 sm:items-center"
-                >
-                  <Image
-                    src={user?.imageUrl ? user?.imageUrl : ""}
-                    width={18}
-                    height={18}
-                    alt="profile"
-                    className="rounded-full object-cover max-sm:mt-0.5"
-                  />
-                  <div className="flex flex-col sm:flex-row sm:items-center">
-                    <p className="body-semibold text-dark300_light700">
-                      {user?.name}
-                    </p>
-
-                    <p className="small-regular text-light400_light500 ml-0.5 mt-0.5 line-clamp-1">
-                      answered {getTimestamp(answer.createdAt)}
-                    </p>
-                  </div>
-                </Link>
-                <div className="flex justify-end">
-                  <Votes
-                    type="answer"
-                    itemId={answer.id}
-                    userId={ClerkUser?.id}
-                    upvotes={answer.upvotes.length}
-                    hasupVoted={answer.upvotes.some(
-                      (item) => item.userId === ClerkUser?.id
-                    )}
-                    downvotes={answer.downvotes.length}
-                    hasdownVoted={answer.downvotes.some(
-                      (item) => item.userId === ClerkUser?.id
-                    )}
-                    Downvotes={answer.downvotes}
-                    Upvotes={answer.upvotes}
-                  />
+                  <p className="small-regular text-light400_light500 ml-0.5 mt-0.5 line-clamp-1">
+                    answered {getTimestamp(answer.createdAt)}
+                  </p>
                 </div>
+              </Link>
+              <div className="flex justify-end">
+                <Votes
+                  type="answer"
+                  itemId={answer.id}
+                  userId={ClerkUser?.id}
+                  upvotes={answer.upvotes.length}
+                  hasupVoted={answer.upvotes.some(
+                    (item) => item.userId === ClerkUser?.id
+                  )}
+                  downvotes={answer.downvotes.length}
+                  hasdownVoted={answer.downvotes.some(
+                    (item) => item.userId === ClerkUser?.id
+                  )}
+                  Downvotes={answer.downvotes}
+                  Upvotes={answer.upvotes}
+                />
               </div>
-              <ParseHTML data={answer.answer} />
-            </article>
-          );
-        })}
+            </div>
+            <ParseHTML explanation={answer.answer} />
+          </article>
+        ))}
       </div>
       {totalAnswers > 10 && (
         <div className="w-full">
